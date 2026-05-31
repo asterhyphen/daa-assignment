@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@700&family=Patrick+Hand&display=swap');
+
+/* Shared Design Tokens */
+:root {
+  --font-title: 'Caveat', cursive;
+  --font-body: 'Patrick Hand', cursive;
+  --font-ui: 'Architects Daughter', cursive;
+  
+  /* Light Mode - Vintage Cream Paper & Pencil Ink */
+  --bg-color: #f6f3e6;
+  --paper-line: rgba(72, 133, 173, 0.15);
+  --paper-margin: rgba(239, 108, 108, 0.4);
+  --ink-color: #1a2a36;
+  --pencil-blue: #2a5a8f;
+  --pencil-red: #cc3333;
+  --pencil-green: #2d8a4e;
+  --marker-yellow: rgba(255, 235, 59, 0.4);
+  --marker-green: rgba(76, 175, 80, 0.3);
+  --marker-red: rgba(244, 67, 54, 0.3);
+  --card-bg: #faf7eb;
+  --btn-bg: #fff;
+  --shadow-color: rgba(26, 42, 54, 0.15);
+  
+  --transition-speed: 0.3s;
+}
+
+[data-theme="dark"] {
+  /* Dark Mode - Blueprint Layout & Cyan Chalk */
+  --bg-color: #0b182d;
+  --paper-line: rgba(38, 198, 218, 0.08);
+  --paper-margin: rgba(255, 235, 59, 0.15);
+  --ink-color: #e3f2fd;
+  --pencil-blue: #90caf9;
+  --pencil-red: #ff8a80;
+  --pencil-green: #a5d6a7;
+  --marker-yellow: rgba(255, 235, 59, 0.2);
+  --marker-green: rgba(76, 175, 80, 0.25);
+  --marker-red: rgba(244, 67, 54, 0.25);
+  --card-bg: #10223f;
+  --btn-bg: #152c52;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Base resets & styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--ink-color);
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* Notebook Ruled Paper Background Overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background-size: 100% 30px, 30px 100%;
+  pointer-events: none;
+}
+
+/* Light theme notebook lines */
+body:not([data-theme="dark"])::before {
+  background-image: 
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, transparent 59px, var(--paper-margin) 1px, transparent 60px);
+}
+
+/* Dark theme blueprint grid */
+body[data-theme="dark"]::before {
+  background-image: 
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 25px 25px, 25px 25px;
+}
+
+/* Global Paper Texture Overlay */
+.paper-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  color: var(--ink-color);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Hand-drawn utility elements */
+.sketch-card {
+  background-color: var(--card-bg);
+  border: 3px solid var(--ink-color);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  padding: 1.5rem;
+  box-shadow: 6px 6px 0px var(--ink-color);
+  transition: transform 0.2s, box-shadow 0.2s, background-color var(--transition-speed);
+  position: relative;
+}
+
+.sketch-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px var(--ink-color);
+}
+
+/* Clicky Hand-drawn Button */
+.sketch-btn {
+  font-family: var(--font-ui);
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: var(--btn-bg);
+  color: var(--ink-color);
+  border: 3px solid var(--ink-color);
+  border-radius: 225px 15px 255px 15px/15px 255px 15px 225px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 3px 4px 0px var(--ink-color);
+  transition: transform 0.1s, box-shadow 0.1s, background-color var(--transition-speed);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.sketch-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 5px 0px var(--ink-color);
+  background-color: var(--marker-yellow);
+}
+
+.sketch-btn:active {
+  transform: translate(2px, 3px);
+  box-shadow: 1px 1px 0px var(--ink-color);
+}
+
+.sketch-btn.btn-red:hover {
+  background-color: var(--marker-red);
+}
+
+.sketch-btn.btn-green:hover {
+  background-color: var(--marker-green);
+}
+
+/* Inputs & Form Elements */
+.sketch-input, .sketch-textarea {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  background-color: var(--btn-bg);
+  color: var(--ink-color);
+  border: 2.5px solid var(--ink-color);
+  border-radius: 120px 15px 100px 15px/15px 110px 15px 120px;
+  outline: none;
+  transition: border-color var(--transition-speed);
+}
+
+.sketch-textarea {
+  border-radius: 15px 95px 15px 95px/95px 15px 95px 15px;
+  resize: vertical;
+}
+
+.sketch-input:focus, .sketch-textarea:focus {
+  border-color: var(--pencil-blue);
+  box-shadow: 0 0 5px rgba(42, 90, 143, 0.3);
+}
+
+/* Header bar and layouts */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 3px dashed var(--ink-color);
+  background-color: transparent;
+  z-index: 100;
+  position: relative;
+}
+
+.navbar .brand {
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--ink-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Dark Mode Switcher (Sketchy hand-drawn icon toggler) */
+.theme-toggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid var(--ink-color);
+  background: var(--btn-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 3px 0 var(--ink-color);
+  transition: transform 0.1s;
+}
+
+.theme-toggle:active {
+  transform: translate(1px, 2px);
+  box-shadow: 1px 1px 0 var(--ink-color);
+}
+
+.theme-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--ink-color);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(20deg);
+}
+
+/* Page Wipe Transition Effect */
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--ink-color);
+  z-index: 10000;
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  pointer-events: none;
+}
+
+.page-transition-overlay.active {
+  transform: translateX(0);
+}
+
+.page-transition-overlay.exit {
+  transform: translateX(100%);
+}
+
+/* Subtle Marker Highlight Overlay */
+.highlight-marker {
+  background-image: linear-gradient(120deg, var(--marker-yellow) 0%, var(--marker-yellow) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.35em;
+  background-position: 0 85%;
+  padding: 0 4px;
+}
+
+.badge {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border: 2px solid var(--ink-color);
+  border-radius: 20px 5px 20px 5px/5px 20px 5px 20px;
+  font-weight: bold;
+}
+
+/* Doodle items */
+.doodle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity var(--transition-speed);
+}
+[data-theme="dark"] .doodle {
+  opacity: 0.35;
+}
+
+/* Ruled paper margin line */
+.notebook-margin-line {
+  position: absolute;
+  left: 59px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--paper-margin);
+  z-index: -1;
+}
+
+/* Tooltip container */
+.sketch-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 2px dotted var(--ink-color);
+}
+
+.sketch-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: var(--card-bg);
+  color: var(--ink-color);
+  border: 2px solid var(--ink-color);
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  box-shadow: 3px 3px 0 var(--ink-color);
+}
+
+.sketch-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Responsive Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  border-top: 3px dashed var(--ink-color);
+  margin-top: 3rem;
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-left: 2px solid var(--ink-color);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--btn-bg);
+  border: 3px solid var(--ink-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--marker-yellow);
+}

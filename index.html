@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Intelligence Suite | Antigravity University</title>
+  <meta name="description" content="A vintage notebook-themed university suite for Spam Keyword Filtering (Naive String Matching) and Campus Route Optimization (Floyd-Warshall Algorithm).">
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="shared/shared.css">
+  <style>
+    /* Unique styles for Landing Page Cover & Inner Page */
+    .desk-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+      padding: 2rem 1rem;
+    }
+
+    .notebook {
+      width: 1000px;
+      max-width: 100%;
+      min-height: 600px;
+      background: var(--card-bg);
+      border: 4px solid var(--ink-color);
+      border-radius: 12px 24px 24px 12px;
+      box-shadow: 15px 15px 0 var(--ink-color);
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed);
+    }
+
+    /* Central binding spirals */
+    .notebook-binding {
+      width: 40px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%);
+      border-left: 2px dashed var(--ink-color);
+      border-right: 2px dashed var(--ink-color);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 20px 0;
+      z-index: 10;
+    }
+
+    .spiral-ring {
+      width: 50px;
+      height: 18px;
+      border: 3px solid var(--ink-color);
+      border-radius: 10px;
+      background: #ccc;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+      transform: translateX(-4px);
+    }
+    
+    [data-theme="dark"] .spiral-ring {
+      background: #1c305c;
+      border-color: var(--ink-color);
+    }
+
+    .notebook-page {
+      flex: 1;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .notebook-page.left-page {
+      border-right: 1px solid var(--paper-line);
+    }
+
+    .notebook-page.right-page {
+      border-left: 1px solid var(--paper-line);
+    }
+
+    /* Header styling */
+    .university-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      border-bottom: 2px double var(--ink-color);
+      padding-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .university-header h2 {
+      font-size: 2.8rem;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .university-header p {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* Illustrations styling */
+    .illus-box {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+
+    .illus-box svg {
+      width: 100%;
+      height: 100%;
+      max-height: 160px;
+      fill: none;
+      stroke: var(--ink-color);
+      stroke-width: 2;
+    }
+
+    .module-card {
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .module-card h3 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .module-card p.description {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    /* Doodles & Ink Rings */
+    .coffee-stain {
+      top: -30px;
+      left: -30px;
+      width: 180px;
+      height: 180px;
+      opacity: 0.12;
+    }
+    
+    [data-theme="dark"] .coffee-stain {
+      opacity: 0.04;
+    }
+
+    .clip-art {
+      position: absolute;
+      top: -20px;
+      right: 40px;
+      width: 50px;
+      height: 60px;
+      transform: rotate(15deg);
+      opacity: 0.8;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .notebook {
+        flex-direction: column;
+        border-radius: 12px;
+        box-shadow: 10px 10px 0 var(--ink-color);
+      }
+      .notebook-binding {
+        width: 100%;
+        height: 30px;
+        flex-direction: row;
+        border-left: none;
+        border-right: none;
+        border-top: 2px dashed var(--ink-color);
+        border-bottom: 2px dashed var(--ink-color);
+        padding: 0 20px;
+      }
+      .spiral-ring {
+        width: 18px;
+        height: 40px;
+        transform: translateY(-4px);
+      }
+      .notebook-page.left-page {
+        border-right: none;
+        border-bottom: 2px dashed var(--paper-line);
+      }
+      .notebook-page.right-page {
+        border-left: none;
+        border-top: 2px dashed var(--paper-line);
+      }
+      .notebook-page {
+        padding: 2.5rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Texture overlay -->
+  <div class="paper-texture"></div>
+
+  <!-- Header / Navigation -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(-10deg);">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Campus Intelligence Suite
+    </a>
+    <div class="nav-controls">
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <!-- Notebook container on a desk -->
+  <div class="desk-container">
+    <div class="notebook">
+      <!-- Left Page: Spam Keyword Filter -->
+      <div class="notebook-page left-page">
+        <!-- Ruled notebook line effects inside page -->
+        <div class="notebook-margin-line"></div>
+        
+        <div class="module-card">
+          <div>
+            <span class="badge" style="background-color: var(--marker-red); margin-bottom: 10px; display: inline-block;">Module I: String Algorithms</span>
+            <h3>Spam Keyword Filter</h3>
+            <p class="highlight-marker" style="font-family: var(--font-ui); font-size: 1.1rem; display: inline-block; margin-bottom: 1rem;">Naive Pattern Matching</p>
+            
+            <div class="illus-box">
+              <!-- Hand-drawn Mail Envelope with a magnifying glass search -->
+              <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Envelope -->
+                <path d="M10 20 H190 V100 H10 Z" style="stroke-dasharray: 240; stroke-dashoffset: 0; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: var(--card-bg);" />
+                <!-- Envelope flaps -->
+                <path d="M10 20 L100 70 L190 20" style="stroke-width: 2.5; stroke-linejoin: round;" />
+                <path d="M10 100 L75 55" style="stroke-width: 2; stroke-linecap: round;" />
+                <path d="M190 100 L125 55" style="stroke-width: 2; stroke-linecap: round;" />
+                <!-- Magnifying Glass -->
+                <circle cx="140" cy="75" r="22" style="stroke-width: 3; fill: var(--marker-yellow);" />
+                <line x1="156" y1="91" x2="180" y2="115" style="stroke-width: 4; stroke-linecap: round;" />
+                <!-- Sketchy keyword lines representing scan -->
+                <line x1="30" y1="45" x2="60" y2="45" style="stroke-width: 2.5; stroke-dasharray: 3 3;" />
+                <line x1="30" y1="60" x2="80" y2="60" style="stroke-width: 2.5; stroke-dasharray: 2 2;" />
+                <line x1="30" y1="75" x2="95" y2="75" style="stroke-width: 3;" />
+              </svg>
+            </div>
+            
+            <p class="description">
+              Analyze incoming academic emails for potential spam content. This module offers an interactive step-by-step visual demonstration of the <strong>Naive String Matching Algorithm</strong>, showcasing character comparisons, sliding shifts, scoring dial gauges, and worst-case complexity structures.
+            </p>
+          </div>
+          
+          <a href="spam-filter/index.html" class="sketch-btn btn-red nav-transition">
+            Open Lab Journal
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Centered Binding spirals -->
+      <div class="notebook-binding">
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+        <div class="spiral-ring"></div>
+      </div>
+
+      <!-- Right Page: Route Optimization -->
+      <div class="notebook-page right-page">
+        <!-- Paperclip doodle decoration -->
+        <svg class="clip-art" viewBox="0 0 50 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 20 V45 C10 52 18 55 24 55 C30 55 38 52 38 45 V15 C38 8 28 3 20 3 C12 3 6 8 6 15 V42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+
+        <div class="module-card">
+          <div>
+            <span class="badge" style="background-color: var(--marker-green); margin-bottom: 10px; display: inline-block;">Module II: Graph Algorithms</span>
+            <h3>Campus Route Optimizer</h3>
+            <p class="highlight-marker" style="font-family: var(--font-ui); font-size: 1.1rem; display: inline-block; margin-bottom: 1rem;">Floyd-Warshall Shortest Path</p>
+            
+            <div class="illus-box">
+              <!-- Hand-drawn Campus map and routes -->
+              <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid nodes -->
+                <circle cx="40" cy="30" r="8" style="stroke-width: 2.5; fill: var(--card-bg);" />
+                <circle cx="160" cy="30" r="8" style="stroke-width: 2.5; fill: var(--card-bg);" />
+                <circle cx="100" cy="65" r="8" style="stroke-width: 2.5; fill: var(--marker-green);" />
+                <circle cx="30" cy="95" r="8" style="stroke-width: 2.5; fill: var(--card-bg);" />
+                <circle cx="150" cy="95" r="8" style="stroke-width: 2.5; fill: var(--card-bg);" />
+                <!-- Dashed paths -->
+                <line x1="48" y1="30" x2="152" y2="30" style="stroke-width: 2; stroke-dasharray: 4 4;" />
+                <line x1="46" y1="36" x2="94" y2="59" style="stroke-width: 2.5; stroke-linecap: round;" />
+                <line x1="154" y1="36" x2="106" y2="59" style="stroke-width: 2.5; stroke-linecap: round;" />
+                <line x1="36" y1="88" x2="94" y2="70" style="stroke-width: 2.5; stroke-linecap: round;" />
+                <line x1="144" y1="89" x2="106" y2="70" style="stroke-width: 2.5; stroke-linecap: round;" />
+                <line x1="30" y1="38" x2="30" y2="87" style="stroke-width: 2; stroke-dasharray: 3 3;" />
+                <!-- Sketched path trace -->
+                <path d="M 40 30 L 100 65 L 150 95" style="stroke: var(--pencil-green); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 5 2;" />
+                <!-- Sketched destination indicator -->
+                <path d="M150 78 L150 91" style="stroke: var(--pencil-red); stroke-width: 3;" />
+                <path d="M150 78 L142 84" style="stroke: var(--pencil-red); stroke-width: 3;" />
+                <path d="M150 78 L158 84" style="stroke: var(--pencil-red); stroke-width: 3;" />
+              </svg>
+            </div>
+            
+            <p class="description">
+              Determine the absolute shortest routes between all buildings on our fictional campus. This module visualizes the complete state transitions of the <strong>Floyd-Warshall Dynamic Programming Algorithm</strong>, animating changing distance tables, predecessor loops, and highlighting reconstructed pathways.
+            </p>
+          </div>
+          
+          <a href="route-optimizer/index.html" class="sketch-btn btn-green nav-transition">
+            Open Map Folio
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative coffee cup stain backdrop -->
+  <img src="data:image/svg+xml;utf8,<svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='rgb(139,90,43)' stroke-width='1.5' fill='none' opacity='0.15'/><circle cx='48' cy='52' r='40.5' stroke='rgb(139,90,43)' stroke-width='0.5' fill='none' opacity='0.08'/></svg>" class="doodle coffee-stain" alt="Coffee ring decoration">
+
+  <footer>
+    <p>© 2026 Antigravity University • Dept. of Computer Science & Algorithmic Designs</p>
+  </footer>
+
+  <!-- Shared Script -->
+  <script src="shared/shared.js"></script>
+</body>
+</html>

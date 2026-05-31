@@ -1,0 +1,329 @@
+/* Route Optimization Module Styles */
+
+.map-layout-container {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 950px) {
+  .map-layout-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.map-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.flex-2 {
+  flex: 1.3;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* Map Card */
+.map-card {
+  padding: 1.5rem;
+}
+
+.map-wrapper {
+  border: 3px solid var(--ink-color);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 2px 2px 8px rgba(0,0,0,0.06);
+}
+
+#campus-svg-map {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+}
+
+/* Map SVG Styling */
+.map-road {
+  stroke: var(--ink-color);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+  opacity: 0.45;
+  transition: opacity 0.3s, stroke-width 0.3s;
+}
+
+.map-road.active-road {
+  opacity: 0.8;
+  stroke-width: 3.5;
+}
+
+.road-label-bg {
+  fill: var(--card-bg);
+  stroke: var(--ink-color);
+  stroke-width: 1.5;
+  rx: 4;
+}
+
+.road-label-text {
+  font-family: var(--font-ui);
+  font-weight: bold;
+  font-size: 11px;
+  fill: var(--ink-color);
+  text-anchor: middle;
+}
+
+/* Nodes / Buildings */
+.map-node {
+  cursor: pointer;
+}
+
+.node-circle {
+  fill: var(--card-bg);
+  stroke: var(--ink-color);
+  stroke-width: 2.5;
+  transition: transform 0.2s, stroke-width 0.2s, fill 0.2s;
+  transform-origin: 0 0;
+}
+
+.node-icon {
+  stroke: var(--ink-color);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s;
+}
+
+.node-tag {
+  font-family: var(--font-ui);
+  font-weight: bold;
+  font-size: 11px;
+  fill: var(--ink-color);
+  text-anchor: middle;
+}
+
+/* Hover States for Nodes */
+.map-node:hover .node-circle {
+  transform: scale(1.1);
+  stroke-width: 3.5;
+  fill: var(--marker-yellow);
+}
+
+/* Active highlights on Nodes */
+.map-node.start-node .node-circle {
+  fill: var(--marker-green);
+  stroke: var(--pencil-green);
+  stroke-width: 4;
+  animation: pulse-node-green 1.5s infinite alternate;
+}
+
+.map-node.start-node .node-icon {
+  stroke: var(--pencil-green);
+}
+
+.map-node.end-node .node-circle {
+  fill: var(--marker-red);
+  stroke: var(--pencil-red);
+  stroke-width: 4;
+  animation: pulse-node-red 1.5s infinite alternate;
+}
+
+.map-node.end-node .node-icon {
+  stroke: var(--pencil-red);
+}
+
+/* Node highlight if currently checked as intermediate 'k' in algorithm steps */
+.map-node.k-node .node-circle {
+  fill: var(--marker-yellow);
+  stroke: var(--ink-color);
+  stroke-width: 4;
+  transform: scale(1.1);
+}
+
+/* Glowing Route trace overlay path */
+.route-trace {
+  stroke: var(--pencil-green);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  /* Filters and glows */
+  filter: drop-shadow(0px 0px 3px var(--pencil-green));
+}
+
+@keyframes pulse-node-green {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.08); }
+}
+
+@keyframes pulse-node-red {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.08); }
+}
+
+/* Route sidebar card layouts */
+.route-sidebar-card {
+  padding-left: 2rem;
+}
+
+.route-selection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1.2rem;
+}
+
+.route-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.route-select {
+  width: 100%;
+  padding: 0.4rem;
+  font-family: var(--font-body);
+}
+
+.narrative-box {
+  min-height: 80px;
+  background-color: var(--btn-bg);
+  border: 2.5px solid var(--ink-color);
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Floyd-Warshall Steps and Matrices CSS */
+.solver-workspace-card {
+  border-color: var(--pencil-blue);
+  box-shadow: 6px 6px 0 var(--pencil-blue);
+}
+
+.solver-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 8px;
+}
+
+.solver-stepper-logs {
+  background-color: var(--btn-bg);
+  border: 2px dashed var(--ink-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  min-height: 54px;
+  line-height: 1.3;
+  margin-bottom: 1.2rem;
+}
+
+/* Matrices Side-By-Side Layout */
+.matrices-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 550px) and (max-width: 950px) {
+  .matrices-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.matrix-box h4 {
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  text-align: center;
+  border-bottom: 1.5px dashed var(--ink-color);
+  padding-bottom: 4px;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.matrix-table th, .matrix-table td {
+  border: 1.5px solid var(--ink-color);
+  width: 15%;
+  height: 28px;
+  vertical-align: middle;
+  transition: background-color 0.3s;
+}
+
+.matrix-table th {
+  background-color: rgba(0,0,0,0.04);
+  font-weight: bold;
+}
+
+.matrix-table td.cell-row-header {
+  background-color: rgba(0,0,0,0.04);
+  font-weight: bold;
+}
+
+/* Active comparisons highlight */
+.matrix-table td.cell-active {
+  background-color: var(--marker-yellow);
+  font-weight: bold;
+}
+
+.matrix-table td.cell-k-focus {
+  background-color: rgba(38, 198, 218, 0.25);
+  font-weight: bold;
+}
+
+/* Update cells */
+.matrix-table td.cell-updated {
+  background-color: var(--marker-green);
+  animation: flash-green 1.2s;
+}
+
+.matrix-table td.cell-scribble-out {
+  position: relative;
+  color: var(--pencil-red);
+}
+
+.matrix-table td.cell-scribble-out::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background-color: var(--pencil-red);
+  transform: rotate(-12deg);
+}
+
+@keyframes flash-green {
+  0% { background-color: var(--marker-green); }
+  50% { background-color: rgba(76, 175, 80, 0.6); }
+  100% { background-color: transparent; }
+}
+
+.matrix-math-explanation {
+  margin-top: 1rem;
+  padding: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  border: 1.5px dashed var(--pencil-blue);
+  border-radius: 6px;
+  text-align: center;
+  background-color: rgba(42, 90, 143, 0.05);
+}

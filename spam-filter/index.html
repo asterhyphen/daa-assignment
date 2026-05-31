@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spam Keyword Filtering | Campus Intelligence Suite</title>
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="../shared/shared.css">
+  <link rel="stylesheet" href="spam.css">
+</head>
+<body>
+
+  <!-- Page Texture -->
+  <div class="paper-texture"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="../index.html" class="brand nav-transition">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Directory
+    </a>
+    <h2 style="font-size: 2.2rem; transform: rotate(-1deg);">Lab Journal: Spam Keyword Filter</h2>
+    <div class="nav-controls">
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <!-- Main Grid Container -->
+  <div class="journal-container">
+    
+    <!-- Left Column: Input and Visualizer -->
+    <div class="journal-col">
+      
+      <!-- Card 1: Email Scanning Text Input -->
+      <div class="sketch-card notepad-page">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <span class="paper-clip">📎</span>
+          <h3>Email Scan Console</h3>
+        </div>
+        <p style="margin-bottom: 1rem;">Type or load a sample email to check for spam keywords.</p>
+        
+        <div class="template-shelf">
+          <button class="sketch-btn btn-small" id="btn-tpl-scam">🚨 Inheritance Scam</button>
+          <button class="sketch-btn btn-small" id="btn-tpl-promo">🎁 Lottery Promo</button>
+          <button class="sketch-btn btn-small" id="btn-tpl-meeting">📅 Faculty Meeting</button>
+          <button class="sketch-btn btn-small" id="btn-tpl-warning">⚠️ IT System Warning</button>
+        </div>
+
+        <textarea class="sketch-textarea" id="email-text" rows="7" placeholder="Dear Student, you have won an inheritance award of 500,000 USD. Please reply with urgent priority..."></textarea>
+      </div>
+
+      <!-- Card 2: Filter Keywords Customization -->
+      <div class="sketch-card notepad-page">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <h3>Filter Rules (Spam Keywords)</h3>
+        </div>
+        <p style="margin-bottom: 0.8rem;">Add keywords and set their threat weights (1-10 points).</p>
+        
+        <div class="keyword-manager">
+          <div class="add-keyword-bar">
+            <input type="text" id="new-keyword" class="sketch-input" placeholder="e.g. FREE" style="width: 150px;">
+            <input type="number" id="new-weight" class="sketch-input" min="1" max="10" value="3" style="width: 70px;" title="Weight">
+            <button class="sketch-btn btn-green" id="btn-add-keyword" style="padding: 0.4rem 0.8rem;">+ Add</button>
+          </div>
+          <div class="keyword-tags" id="keyword-tags-container">
+            <!-- Populated via Javascript -->
+          </div>
+        </div>
+        <div style="text-align: right; margin-top: 1rem;">
+          <button class="sketch-btn btn-red" id="btn-run-scan" style="font-size: 1.2rem;">🔍 Run Full Scan</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Naive String Matching Visualizer -->
+      <div class="sketch-card notepad-page visualizer-card">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <h3>Naive Matching Visualizer</h3>
+        </div>
+        <p style="margin-bottom: 1rem;">Choose a keyword to trace how the naive search algorithm scans it in the text.</p>
+        
+        <div class="visualizer-selection-bar">
+          <label for="select-trace-word" style="font-family: var(--font-ui); font-weight: bold;">Trace Keyword:</label>
+          <select id="select-trace-word" class="sketch-input" style="padding: 0.3rem 0.6rem; font-family: var(--font-body);">
+            <!-- Options dynamically added -->
+          </select>
+        </div>
+
+        <!-- Animation Canvas Grid Container -->
+        <div class="animation-container">
+          <!-- Text Buffer Row -->
+          <div class="slider-row" id="text-buffer-row">
+            <!-- Filled via JS -->
+          </div>
+          <!-- Pattern Buffer Row -->
+          <div class="slider-row" id="pattern-buffer-row">
+            <!-- Filled via JS -->
+          </div>
+        </div>
+
+        <!-- Animation Details log -->
+        <div class="animation-log" id="animation-log-text">
+          Select a keyword above and click Play to start the visual search alignment steps.
+        </div>
+
+        <!-- Controls -->
+        <div class="control-panel">
+          <div class="control-buttons">
+            <button class="sketch-btn btn-small" id="btn-anim-prev" title="Step Backward">⏮ Back</button>
+            <button class="sketch-btn btn-green" id="btn-anim-play">▶ Play</button>
+            <button class="sketch-btn btn-small" id="btn-anim-next" title="Step Forward">Next ⏭</button>
+            <button class="sketch-btn btn-red" id="btn-anim-reset">🔄 Reset</button>
+          </div>
+          <div class="speed-slider-container">
+            <span style="font-family: var(--font-ui); font-size: 0.9rem;">Speed:</span>
+            <input type="range" id="anim-speed" min="100" max="1500" value="600" style="width: 100px;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Results & Theory -->
+    <div class="journal-col">
+      
+      <!-- Card 4: Spam Risk Analysis (Spam Meter) -->
+      <div class="sketch-card notepad-page">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <h3>Spam Risk Dashboard</h3>
+        </div>
+        
+        <div class="results-dashboard">
+          <!-- Gauge Meter -->
+          <div class="gauge-container">
+            <div class="gauge-meter-wrapper">
+              <svg width="220" height="130" viewBox="0 0 220 130">
+                <defs>
+                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#4caf50" />
+                    <stop offset="50%" stop-color="#ffeb3b" />
+                    <stop offset="100%" stop-color="#f44336" />
+                  </linearGradient>
+                </defs>
+                <!-- Arch outer -->
+                <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#ddd" stroke-width="16" stroke-linecap="round" />
+                <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#gaugeGrad)" stroke-width="16" stroke-linecap="round" />
+                <!-- Center Pivot -->
+                <circle cx="110" cy="110" r="8" fill="var(--ink-color)" />
+                <!-- Indicator Dial needle -->
+                <line id="gauge-needle" x1="110" y1="110" x2="110" y2="35" stroke="var(--ink-color)" stroke-width="4" stroke-linecap="round" style="transform-origin: 110px 110px; transform: rotate(-90deg); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);" />
+              </svg>
+            </div>
+            <div class="gauge-label" id="spam-score-label">Spam Threat: 0%</div>
+            <div class="gauge-status badge" id="spam-status-badge" style="background-color: var(--marker-green); display: inline-block;">LEGITIMATE</div>
+          </div>
+
+          <!-- Statistics Breakdown -->
+          <div class="scan-breakdown">
+            <h4>Flagged Matches</h4>
+            <div id="flagged-list" class="flagged-list-container">
+              <p style="opacity: 0.6; font-style: italic;">No threat keywords detected yet. Run scan!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Pseudocode Tracker & Algorithmic Complexity -->
+      <div class="sketch-card notepad-page">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <h3>Pseudocode & Complexity Analysis</h3>
+        </div>
+
+        <div class="tabs-container">
+          <div class="tab-headers">
+            <button class="tab-btn active" data-tab="tab-code">Code Tracker</button>
+            <button class="tab-btn" data-tab="tab-graphs">Complexity Charts</button>
+          </div>
+
+          <div class="tab-content active" id="tab-code">
+            <pre class="pseudocode-display">
+<span id="p-line-1">1:  for i = 0 to N - M:</span>
+<span id="p-line-2">2:    j = 0</span>
+<span id="p-line-3">3:    while j &lt; M and Text[i + j] == Pattern[j]:</span>
+<span id="p-line-4">4:      j++</span>
+<span id="p-line-5">5:    if j == M:</span>
+<span id="p-line-6">6:      Match found at index i!</span>
+            </pre>
+            <div class="complexity-stat-box">
+              <div><strong>Comparisons Done:</strong> <span id="stat-comparisons">0</span></div>
+              <div><strong>Text Length (N):</strong> <span id="stat-n">0</span></div>
+              <div><strong>Pattern Length (M):</strong> <span id="stat-m">0</span></div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-graphs">
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">Compares actual comparisons vs theoretical cases ($N \cdot M$):</p>
+            <div class="chart-container">
+              <!-- Inline SVG for sketchy graph drawing -->
+              <svg width="100%" height="200" id="complexity-svg-chart">
+                <!-- Axes -->
+                <line x1="30" y1="170" x2="280" y2="170" stroke="currentColor" stroke-width="2.5" />
+                <line x1="30" y1="10" x2="30" y2="170" stroke="currentColor" stroke-width="2.5" />
+                <!-- Axis Labels -->
+                <text x="270" y="190" font-family="var(--font-ui)" font-size="12" fill="currentColor">N</text>
+                <text x="5" y="20" font-family="var(--font-ui)" font-size="12" fill="currentColor">Ops</text>
+                <!-- Worst Case Line (dashed) -->
+                <path id="worst-case-path" d="M 30 170 Q 150 120 270 20" fill="none" stroke="var(--pencil-red)" stroke-width="2" stroke-dasharray="4 4" />
+                <text x="180" y="50" font-family="var(--font-ui)" font-size="11" fill="var(--pencil-red)">Worst O(N•M)</text>
+                <!-- Best Case Line (dotted) -->
+                <line x1="30" y1="170" x2="270" y2="120" stroke="var(--pencil-green)" stroke-width="2" stroke-dasharray="2 2" />
+                <text x="180" y="110" font-family="var(--font-ui)" font-size="11" fill="var(--pencil-green)">Best O(N)</text>
+                <!-- Actual Comparisons Bar/Scatter Plot -->
+                <circle id="actual-comp-point" cx="30" cy="170" r="6" fill="var(--pencil-blue)" style="transition: cx 0.5s, cy 0.5s;" />
+                <text id="actual-comp-label" x="40" y="165" font-family="var(--font-ui)" font-size="12" fill="var(--pencil-blue)">Actual</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Card 6: Educational Notes -->
+      <div class="sketch-card notepad-page">
+        <div class="notebook-margin-line"></div>
+        <div class="card-header">
+          <h3>Algorithm Lab Notes</h3>
+        </div>
+        <div class="lab-notes-content">
+          <p>
+            The <strong>Naive String Matching Algorithm</strong> checks for the presence of a pattern within a text by sliding the pattern across the text one character at a time.
+          </p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li><strong>Step-by-step:</strong> Compares character by character. If a mismatch occurs, it shifts the pattern exactly <strong>one position</strong> to the right and starts checks over.</li>
+            <li><strong>Worst-case complexity:</strong> $O((N - M + 1) \cdot M)$ comparisons. This occurs when both the text and the pattern consist of the same repeated characters (e.g., Text = <code>"AAAAAAAB"</code>, Pattern = <code>"AAAB"</code>).</li>
+            <li><strong>Best-case complexity:</strong> $O(N)$ operations. Occurs when mismatches occur immediately on the first character comparison, resulting in a single comparison per shift.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Antigravity University • Lab Session I • Naive Matching</p>
+  </footer>
+
+  <!-- Shared Script -->
+  <script src="../shared/shared.js"></script>
+  <!-- Module Script -->
+  <script src="spam.js"></script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Route Optimization | Campus Intelligence Suite</title>
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="../shared/shared.css">
+  <link rel="stylesheet" href="route.css">
+</head>
+<body>
+
+  <!-- Page Texture -->
+  <div class="paper-texture"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="../index.html" class="brand nav-transition">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Directory
+    </a>
+    <h2 style="font-size: 2.2rem; transform: rotate(1deg);">Map Folio: Campus Route Optimization</h2>
+    <div class="nav-controls">
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="map-layout-container">
+    
+    <!-- Left Column: SVG Map -->
+    <div class="map-column flex-2">
+      <div class="sketch-card map-card">
+        <div class="card-header">
+          <span class="paper-clip">📌</span>
+          <h3>Interactive Campus Map</h3>
+        </div>
+        <p style="margin-bottom: 1rem;">Click a building to set <strong>Start (Green highlight)</strong>, and click another to set <strong>Destination (Red highlight)</strong>.</p>
+        
+        <div class="map-wrapper">
+          <!-- The Campus Map as an Interactive SVG -->
+          <svg viewBox="0 0 600 400" id="campus-svg-map">
+            <!-- Grid texture backing for grid alignment in SVG -->
+            <defs>
+              <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#smallGrid)" />
+
+            <!-- Connection Road Paths (Dashed Pencil paths) -->
+            <!-- A - L -->
+            <line x1="100" y1="110" x2="300" y2="90" class="map-road" id="road-A-L" />
+            <!-- A - E -->
+            <line x1="100" y1="110" x2="150" y2="280" class="map-road" id="road-A-E" />
+            <!-- E - L -->
+            <line x1="150" y1="280" x2="300" y2="90" class="map-road" id="road-E-L" />
+            <!-- L - S -->
+            <line x1="300" y1="90" x2="460" y2="130" class="map-road" id="road-L-S" />
+            <!-- E - D -->
+            <line x1="150" y1="280" x2="350" y2="310" class="map-road" id="road-E-D" />
+            <!-- S - D -->
+            <line x1="460" y1="130" x2="350" y2="310" class="map-road" id="road-S-D" />
+            <!-- S - R -->
+            <line x1="460" y1="130" x2="530" y2="290" class="map-road" id="road-S-R" />
+            <!-- D - R -->
+            <line x1="350" y1="310" x2="530" y2="290" class="map-road" id="road-D-R" />
+
+            <!-- Walking Time labels on Edges -->
+            <!-- A-L (8) -->
+            <rect x="195" y="88" width="22" height="18" class="road-label-bg" />
+            <text x="206" y="102" class="road-label-text">8</text>
+
+            <!-- A-E (4) -->
+            <rect x="110" y="185" width="22" height="18" class="road-label-bg" />
+            <text x="121" y="199" class="road-label-text">4</text>
+
+            <!-- E-L (5) -->
+            <rect x="215" y="175" width="22" height="18" class="road-label-bg" />
+            <text x="226" y="189" class="road-label-text">5</text>
+
+            <!-- L-S (6) -->
+            <rect x="375" y="98" width="22" height="18" class="road-label-bg" />
+            <text x="386" y="112" class="road-label-text">6</text>
+
+            <!-- E-D (6) -->
+            <rect x="240" y="280" width="22" height="18" class="road-label-bg" />
+            <text x="251" y="294" class="road-label-text">6</text>
+
+            <!-- S-D (5) -->
+            <rect x="400" y="210" width="22" height="18" class="road-label-bg" />
+            <text x="411" y="224" class="road-label-text">5</text>
+
+            <!-- S-R (4) -->
+            <rect x="488" y="200" width="22" height="18" class="road-label-bg" />
+            <text x="499" y="214" class="road-label-text">4</text>
+
+            <!-- D-R (7) -->
+            <rect x="435" y="288" width="22" height="18" class="road-label-bg" />
+            <text x="446" y="302" class="road-label-text">7</text>
+
+            <!-- Animated Route Highlight Overlay Line (Solid Green crayon trace) -->
+            <path id="route-highlight-path" d="" fill="none" class="route-trace" />
+
+            <!-- Nodes / Buildings SVG groups -->
+            <!-- ADMIN HALL (A) -->
+            <g class="map-node" id="node-A" transform="translate(100, 110)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: Columns representing Admin building -->
+              <path d="M-8,8 L-8,-4 L8,-4 L8,8 M-4,-4 L-4,8 M0,-4 L0,8 M4,-4 L4,8 M-11,-4 L11,-4 L0,-11 Z" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Admin Hall (A)</text>
+            </g>
+
+            <!-- ENGINEERING DEPT (E) -->
+            <g class="map-node" id="node-E" transform="translate(150, 280)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: Gear representation -->
+              <path d="M-6,-6 L6,6 M-6,6 L6,-6 M-8,0 L8,0 M0,-8 L0,8" stroke-width="2.5" class="node-icon" />
+              <circle cx="0" cy="0" r="5" fill="none" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Engineering (E)</text>
+            </g>
+
+            <!-- MAIN LIBRARY (L) -->
+            <g class="map-node" id="node-L" transform="translate(300, 90)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: Book representation -->
+              <path d="M-8,-4 L0,-8 L8,-4 V6 L0,2 L-8,6 Z M0,-8 V2" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Library (L)</text>
+            </g>
+
+            <!-- SCIENCE LABS (S) -->
+            <g class="map-node" id="node-S" transform="translate(460, 130)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: Beaker representation -->
+              <path d="M-5,-9 L5,-9 M-2,-9 L-2,-3 L-8,7 A4,4 0 0 0 -4,11 L4,11 A4,4 0 0 0 8,7 L2,-3 L2,-9" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Science Labs (S)</text>
+            </g>
+
+            <!-- STUDENT DORMS (D) -->
+            <g class="map-node" id="node-D" transform="translate(350, 310)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: House/Beds representation -->
+              <path d="M-8,6 V-2 L0,-8 L8,-2 V6 Z M-8,-2 L8,-2" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Dormitories (D)</text>
+            </g>
+
+            <!-- SPORTS ARENA (R) -->
+            <g class="map-node" id="node-R" transform="translate(530, 290)">
+              <circle cx="0" cy="0" r="22" class="node-circle" />
+              <!-- Small sketch icon: Whistle or Trophy shape -->
+              <path d="M-6,-8 H6 V-2 C6,3 3,6 0,6 C-3,6 -6,3 -6,-2 Z M-6,-2 C-8,-2 -9,-4 -9,-6 C-9,-8 -8,-9 -6,-9" class="node-icon" />
+              <text x="0" y="25" class="node-tag">Sports Arena (R)</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Algorithm Panel -->
+    <div class="map-column flex-1">
+      
+      <!-- Card: Router Console Selection -->
+      <div class="sketch-card route-sidebar-card">
+        <div class="card-header">
+          <h3>Navigation Terminal</h3>
+        </div>
+        
+        <div class="route-selection-grid">
+          <div>
+            <label for="select-start-node" class="route-label">Start Point:</label>
+            <select id="select-start-node" class="sketch-input route-select">
+              <option value="A">Admin Hall (A)</option>
+              <option value="E">Engineering Dept (E)</option>
+              <option value="L" selected>Main Library (L)</option>
+              <option value="S">Science Labs (S)</option>
+              <option value="D">Student Dormitories (D)</option>
+              <option value="R">Sports Arena (R)</option>
+            </select>
+          </div>
+          <div>
+            <label for="select-end-node" class="route-label">Destination:</label>
+            <select id="select-end-node" class="sketch-input route-select">
+              <option value="A">Admin Hall (A)</option>
+              <option value="E">Engineering Dept (E)</option>
+              <option value="L">Main Library (L)</option>
+              <option value="S">Science Labs (S)</option>
+              <option value="D">Student Dormitories (D)</option>
+              <option value="R" selected>Sports Arena (R)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="narrative-box" id="route-narrative">
+          Select start and destination building. The Floyd-Warshall algorithm will calculate the shortest path.
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <button class="sketch-btn btn-green" id="btn-show-solver" style="font-size: 1.05rem;">🔬 Inspect Floyd-Warshall Matrices</button>
+        </div>
+      </div>
+
+      <!-- Card: Floyd-Warshall Matrix Workspace -->
+      <div class="sketch-card route-sidebar-card solver-workspace-card" id="solver-panel" style="display: none;">
+        <div class="card-header">
+          <h3>Floyd-Warshall Dynamic Matrices</h3>
+        </div>
+        <p style="margin-bottom: 0.8rem; font-size: 1.1rem;">
+          Dynamic Programming: checking paths via intermediate vertex <strong id="current-k-label" class="highlight-marker">k = None</strong>.
+        </p>
+
+        <!-- Solver Steps Controller -->
+        <div class="solver-controls">
+          <button class="sketch-btn btn-small" id="btn-solver-prev">⏮ Prev k</button>
+          <button class="sketch-btn btn-green btn-small" id="btn-solver-play">▶ Auto</button>
+          <button class="sketch-btn btn-small" id="btn-solver-next">Next k ⏭</button>
+        </div>
+        
+        <div class="solver-stepper-logs" id="solver-log-message">
+          Init adjacency matrix representing direct edges (k = 0).
+        </div>
+
+        <!-- Scrollable Matrices Container -->
+        <div class="matrices-container">
+          <!-- Distance Matrix -->
+          <div class="matrix-box">
+            <h4>Distance Matrix D<sup>(k)</sup></h4>
+            <table class="matrix-table" id="distance-matrix-table">
+              <!-- Rendered via JS -->
+            </table>
+          </div>
+
+          <!-- Predecessor Matrix -->
+          <div class="matrix-box">
+            <h4>Predecessor Matrix P<sup>(k)</sup></h4>
+            <table class="matrix-table" id="predecessor-matrix-table">
+              <!-- Rendered via JS -->
+            </table>
+          </div>
+        </div>
+        
+        <div class="matrix-math-explanation">
+          <strong>DP Update formula:</strong><br>
+          <code>D[i][j] = min( D[i][j], D[i][k] + D[k][j] )</code>
+        </div>
+      </div>
+
+      <!-- Card: Educational Notes -->
+      <div class="sketch-card route-sidebar-card">
+        <div class="card-header">
+          <h3>Floyd-Warshall Lab Notes</h3>
+        </div>
+        <div class="lab-notes-content" style="font-size: 1.05rem;">
+          <p>
+            The <strong>Floyd-Warshall Algorithm</strong> calculates the shortest path between <em>every pair</em> of vertices in a weighted graph.
+          </p>
+          <ul style="margin-left: 1.2rem; margin-top: 0.5rem;">
+            <li><strong>Dynamic Programming:</strong> Solves subproblems by gradually allowing more vertices to act as intermediate hops along a path.</li>
+            <li><strong>Time Complexity:</strong> $O(V^3)$ operations due to three nested loops. It is highly efficient for dense graphs with many query paths.</li>
+            <li><strong>Reconstruction:</strong> Using the predecessor matrix $P[i][j]$, we trace backwards from destination to source to draw the optimal routes.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Antigravity University • Lab Session II • Floyd-Warshall All-Pairs Route Design</p>
+  </footer>
+
+  <!-- Shared Script -->
+  <script src="../shared/shared.js"></script>
+  <!-- Module Script -->
+  <script src="route.js"></script>
+</body>
+</html>
