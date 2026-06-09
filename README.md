@@ -1,6 +1,6 @@
 # Design and Analysis of Algorithms Assignment
 ## Question 1: 
-> Campus Route Optimisation usin Floyd Warshall algorithm. <br>
+> Campus Route Optimisation using Floyd Warshall algorithm. <br>
 
 ## Question 2: 
 > Spam Keyword Filtering using Naive String Matching algorithm <br>
