@@ -7,18 +7,18 @@
 
 ## Project Src Tree
 ```
- .
-├──  index.html (common webpage)
-├── 󰂺 README.md
-├──  route-optimizer
-│   ├──  index.html
-│   ├──  route.css
-│   └──  route.js
-├──  shared
-│   ├──  shared.css
-│   └──  shared.js
-└──  spam-filter
-    ├──  index.html
-    ├──  spam.css
-    └──  spam.js
+.
+├── index.html
+├── README.md
+├── route-optimizer
+│   ├── index.html
+│   ├── route.css
+│   └── route.js
+├── shared
+│   ├── shared.css
+│   └── shared.js
+└── spam-filter
+    ├── index.html
+    ├── spam.css
+    └── spam.js
 ```
