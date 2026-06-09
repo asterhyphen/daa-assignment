@@ -1,13 +1,16 @@
 # Design and Analysis of Algorithms Assignment
-## Question 1: 
-> Campus Route Optimisation using Floyd Warshall algorithm. <br>
 
-## Question 2: 
-> Spam Keyword Filtering using Naive String Matching algorithm <br>
+## Question 1
+>
+> Campus Route Optimisation using Floyd Warshall algorithm.
+
+## Question 2
+>
+> Spam Keyword Filtering using Naive String Matching algorithm.
 
 ## Project Src Tree
-```
-.
+
+```.
 ├── index.html
 ├── README.md
 ├── route-optimizer
