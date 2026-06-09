@@ -3,7 +3,7 @@
 > Campus Route Optimisation usin Floyd Warshall algorithm. <br>
 
 ## Question 2: 
-> Spam Filtering using Naive String Matching algorithm <br>
+> Spam Keyword Filtering using Naive String Matching algorithm <br>
 
 ## Project Src Tree
 ```
